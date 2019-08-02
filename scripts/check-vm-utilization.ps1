@@ -13,11 +13,11 @@
 function Add-UtilizationRecord
 {
 	<#
-	.SYNOPSIS
-		Adds a Virtual Machine Utilization record a Storage Table.
-	.DESCRIPTION
-		Adds a Virtual Machine Utilization record a Storage Table.
-	.PARAMETER storageAccount
+    .SYNOPSIS
+        Adds a Virtual Machine Utilization record a Storage Table.
+    .DESCRIPTION
+        Adds a Virtual Machine Utilization record a Storage Table.
+    .PARAMETER storageAccount
         Storage Account where the utilization table lives
     .PARAMETER tableName
         Name of the utilization table to save records
@@ -25,14 +25,14 @@ function Add-UtilizationRecord
         Virtual Machine Instance of the utilization metrics to fetch
     .PARAMETER context
         The current metadata used to authenticate Azure Resource Manager request
-	.EXAMPLE
-		# Getting latest utilization
-		$storageAccount = Get-AzStorageAccount ...
-		$tableName = "table01"
+    .EXAMPLE
+        # Getting latest utilization
+        $storageAccount = Get-AzStorageAccount ...
+        $tableName = "table01"
         $vmInstance = (Get-AzVM -Status)[0] 
         $context = Get-AzContext ...
-		Add-UtilizationRecord -StorageAccount $storageAccount -TableName $tableName -VirtualMachineInstance $vmInstance -Context $context
-	#>
+        Add-UtilizationRecord -StorageAccount $storageAccount -TableName $tableName -VirtualMachineInstance $vmInstance -Context $context
+    #>
 	[CmdletBinding()]
 	param
 	(
