@@ -12,7 +12,7 @@
 
 function Add-UtilizationRecord
 {
-	<#
+    <#
     .SYNOPSIS
         Adds a Virtual Machine Utilization record a Storage Table.
     .DESCRIPTION
@@ -49,31 +49,11 @@ function Add-UtilizationRecord
         $context
     )
 
-    #GLOBAL SETUP
-    # Get Storage and Table
-    # $storage_az_ctx = Get-AzContext
-    # $resource_group_name = "blxBilling"
-    # $storage_account_name = "blxbillingdiag"
-    # $storageAccount = Get-AzStorageAccount -ResourceGroupName $resource_group_name -Name $storage_account_name -DefaultProfile $storage_az_ctx
     $storageContext = $storageAccount.Context
-
-    # $table_name = 'MetricsDailyVm'
     $storageTable  = Get-AzStorageTable –Name $tableName –Context $storageContext
     $cloudTable = $storageTable.CloudTable
 
-    # GET CONTEXT
-    # $contexts = Get-AzContext -ListAvailable
-
-    # Foreach($context in $contexts){
-
-    #Set-AzContext -Context $context
     $curSubscription = $context.Subscription
-
-    # Get vm Metrics
-    #$vms = Get-AzVM -Status 
-    #Foreach ($vm in $vms)
-    #{
-        
     $timeNow = [DateTime]::UtcNow 
 
     # Build Row Object
@@ -116,5 +96,4 @@ function Add-UtilizationRecord
     # Publish Row to Table Storage
     Add-AzTableRow -table $cloudTable -partitionKey $partitionKey -rowKey ($rowKey) -property $hash
 
-    #}
 }
