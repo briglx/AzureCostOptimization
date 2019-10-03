@@ -4,6 +4,14 @@ The `azure cost optimization` is an unofficial collection of scripts used to fin
 
 Azure provides metrics usage for their customers. The `azure cost optimzation` uses a script to fetch the data and use PowerBI M queries to parse the data info useful fields.
 
+# Requirements
+
+This works with
+- `>= PS v6.2.2`
+- `>= AZ 2.4.0`
+- `>= AzTable 2.0.2`
+
+
 # Resources
 - [https://stackoverflow.com/questions/57218402/finding-idle-virtual-machines-and-deallocating-them-using-azure-function]
 - [Supported Metrics](https://docs.microsoft.com/en-us/azure/azure-monitor/platform/metrics-supported)

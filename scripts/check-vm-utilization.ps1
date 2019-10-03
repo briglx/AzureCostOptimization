@@ -2,7 +2,7 @@
 .SYNOPSIS
 	check-vm-utilization.ps1 - PowerShell Script to fetch utilization data from Virtural Machines.
 .DESCRIPTION
-  	check-vm-utilization.psm1 - PowerShell Script to fetch utilization data from Virtural Machines.
+      check-vm-utilization.psm1 - PowerShell Script to fetch utilization data from Virtural Machines.
 .NOTES
 	This script depends on Az.Accounts, Az.VirtualMachines, Az.Storage, and AzTable PowerShell modules	
 #>
@@ -17,6 +17,7 @@ function Add-UtilizationRecord
         Adds a Virtual Machine Utilization record a Storage Table.
     .DESCRIPTION
         Adds a Virtual Machine Utilization record a Storage Table.
+        Fetches utilization data for the previous week.
     .PARAMETER storageAccount
         Storage Account where the utilization table lives
     .PARAMETER tableName
@@ -70,14 +71,15 @@ function Add-UtilizationRecord
     $localName = @{l="Name";e={$_.Name.LocalizedValue}}
     $average = @{l="Average";e={($_.Data.Average | Measure-Object -Average).Average}}
     $dataPoints = @{l="DataPoints";e={$_.Data.Count}}
+    $startTime = $timeNow.AddDays(-7) 
 
-    $metricResult = Get-AzMetric -ResourceId $virtualMachineInstance.Id -MetricName  @("Percentage CPU", "Disk Read Operations/Sec", "Disk Write Operations/Sec", "Network In", "Network Out", "Disk Write Bytes") -TimeGrain 00:05:00 -ResultType Data
+    $metricResult = Get-AzMetric -ResourceId $virtualMachineInstance.Id -MetricName  @("Percentage CPU", "Disk Read Operations/Sec", "Disk Write Operations/Sec", "Network In", "Network Out", "Network In Total", "Network Out Total", "Disk Write Bytes") -StartTime $startTime -EndTime $timeNow -TimeGrain 00:05:00 -ResultType Data
     $record = $metricResult | Select-Object -Property $localName,Unit,$average,$dataPoints
     
     $pivots = $record | Select-Object -unique "Name" | ForEach-Object { $_.Name } | Sort-Object 
     foreach ($pivot in $pivots)
     {
-        $fieldName = $pivot -replace '\s|\/',''
+        $fieldName = $pivot -replace '\s|\/|\(|\)',''
         $row | add-member NoteProperty $fieldName ($record | Where-Object {$_.Name -eq $pivot}).Average
     }      
 
