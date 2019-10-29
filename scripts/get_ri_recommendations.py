@@ -1,6 +1,6 @@
 #!/usr/bin/python
 
-"""Init file for Srp Energy."""
+"""Script to fetch RI recommendations."""
 
 import sys
 import json
